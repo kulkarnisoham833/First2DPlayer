@@ -8,6 +8,7 @@ import java.awt.image.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.OptionalInt;
 
 public class Player extends Entity {
 
@@ -75,8 +76,10 @@ public class Player extends Entity {
             gp.cChecker.checkTile(this);
 
             // CHECK OBJ COLL
-            int objIndex = gp.cChecker.checkObject(this, true);
-            pickUpObject(objIndex);
+            OptionalInt objIndex = gp.cChecker.checkObject(this, true);
+            if (objIndex.isPresent()) {
+                pickUpObject(objIndex.getAsInt());
+            }
 
             // IF COLLISION IS FALSE, PLAYER CAN MOVE
             if(!collisionOn) {
@@ -109,8 +112,7 @@ public class Player extends Entity {
         }
     }
 
-    public void pickUpObject( int i) {
-        if(i == 999) return;
+    public void pickUpObject(int i) {
         String objectName = gp.obj[i].name;
 
         switch(objectName) {
